@@ -27,6 +27,7 @@ p <- ggplot(user_retention_jawiki_31days, aes(x = last_seen_date, y = avg_days_t
   geom_line() +
   geom_vline(xintercept = as.numeric(as.Date("2018-03-28")),
              linetype = "dashed", color = "blue") +
+  geom_text(aes(x=as.Date('2018-03-28'), y=5.5, label="switch to Singapore datacenter (page load time 1.4s --> 1.2s)"), size=3, vjust = -1.2, angle = 90, color = "black") +
   scale_y_continuous("Average number of days until next access", labels = polloi::compress) +
   scale_x_date("Last access date", labels = date_format("%Y-%m-%d"), date_breaks = "5 days")  +
   labs(title = "Average user returns within 31 days on all Wikipedia projects from Japan") +  
@@ -46,7 +47,7 @@ p <- ggplot(user_retention_idwiki_31days, aes(x = last_seen_date, y = avg_days_t
   geom_line() +
   geom_vline(xintercept = as.numeric(as.Date("2018-03-26")),
              linetype = "dashed", color = "blue") +
-  geom_text(aes(x=as.Date('2018-03-26'), y=8, label="switch to Singapore datacenter (page load time 3s --> 2s)"), size=3, vjust = -1.2, angle = 90, color = "black") +
+  geom_text(aes(x=as.Date('2018-03-26'), y=6.5, label="switch to Singapore datacenter (page load time 3s --> 2s)"), size=3, vjust = -1.2, angle = 90, color = "black") +
   scale_y_continuous("Average number of days until next access", labels = polloi::compress) +
   scale_x_date("Last access date", labels = date_format("%Y-%m-%d"), date_breaks = "5 days")  +
   labs(title = "Average user return time within 31 days on all Wikipedia Projects from Indonesia") +  
@@ -318,7 +319,7 @@ p <- ggplot(user_retention_idwiki_31days_from2016, aes(x = last_seen_date, y = a
   geom_line() +
   geom_vline(xintercept = as.numeric(as.Date("2018-03-26")),
              linetype = "dashed", color = "blue") +
-  geom_text(aes(x=as.Date('2018-03-26'), y=8, label="switch to Singapore datacenter (page load time 3s --> 2s)"), size=3, vjust = -1.2, angle = 90, color = "black") +
+  geom_text(aes(x=as.Date('2018-03-26'), y=7, label="switch to Singapore datacenter (page load time 3s --> 2s)"), size=3, vjust = -1.2, angle = 90, color = "black") +
   scale_y_continuous("Average number of days until next access", labels = polloi::compress) +
   scale_x_date("Last access date", labels = date_format("%Y-%m-%d"), date_breaks = "1 month")  +
   labs(title = "Average user return time within 31 days on all Wikipedia Projects from Indonesia") +  

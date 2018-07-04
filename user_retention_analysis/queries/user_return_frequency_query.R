@@ -65,7 +65,6 @@ readr::write_rds(return_frequency_Indonesia_drop, "return_frequency_Indonesia_dr
 #LOCAL
 system("scp mneisler@stat5:/home/mneisler/return_frequency_Indonesia_drop.rds return_frequency_Indonesia_drop.rds")
 
-##Bangladesh Trends
 
 #Bangladesh Drop on mobile web between 2018-01-28 and 2018-01-30
 start_date <- 1517097600  #2018-01-28
@@ -164,38 +163,5 @@ readr::write_rds(return_frequency_India_drop, "return_frequency_India_drop.rds",
 
 #LOCAL
 system("scp mneisler@stat5:/home/mneisler/return_frequency_India_drop.rds return_frequency_India_drop.rds")
-
-## Japan drop on desktop on 2016-12-31
-
-start_date <- 1483056000  #2016-12-30
-end_date <- 1483142400 #2016-12-31
-
-return_frequency_Japan_drop <- do.call(rbind, lapply(seq(start_date, end_date, by=86400), function(date) {
-  cat("Fetching webrequest data from ", as.character(date), "\n")
-  
-  query <- paste("
-                 SELECT '",date,"' AS date, 
-                 (unix_timestamp(CONCAT(year,'-',LPAD(month,2,'0'),'-',LPAD(day,2,'0')), 'yyyy-MM-dd') 
-                 - unix_timestamp(wmf_last_access, 'dd-MMM-yyyy'))/86400 AS days_till_next_access, 
-                 COUNT (*) AS returns_each_day
-                 FROM tbayer.webrequest_extract_bak
-                 WHERE unix_timestamp(wmf_last_access, 'dd-MMM-yyyy') = ", date, "
-                 AND year = 2016
-                 AND access_method = 'mobile web' 
-                 AND project_class = 'wikipedia' 
-                 AND country_code = 'JP'
-                 AND unix_timestamp(CONCAT(year,'-',LPAD(month,2,'0'),'-',LPAD(day,2,'0')), 'yyyy-MM-dd') < (unix_timestamp(wmf_last_access, 'dd-MMM-yyyy') + 2764800) -- 2764800 seconds = 32 days
-                 AND unix_timestamp(CONCAT(year,'-',LPAD(month,2,'0'),'-',LPAD(day,2,'0')), 'yyyy-MM-dd') >= (unix_timestamp(wmf_last_access, 'dd-MMM-yyyy') + 86400) -- 86400 seconds = 1 day
-                 GROUP BY (unix_timestamp(CONCAT(year,'-',LPAD(month,2,'0'),'-',LPAD(day,2,'0')), 'yyyy-MM-dd') - unix_timestamp(wmf_last_access, 'dd-MMM-yyyy'))/86400
-                 ;") 
-  cat(query)
-  results <- wmf::query_hive(query)
-  return(results)
-}))
-
-readr::write_rds(return_frequency_Japan_drop, "return_frequency_Japan_drop.rds", "gz")
-
-#LOCAL
-system("scp mneisler@stat5:/home/mneisler/return_frequency_Japan_drop.rds return_frequency_Japan_drop.rds")
 
 

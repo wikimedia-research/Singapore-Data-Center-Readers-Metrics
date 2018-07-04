@@ -349,6 +349,3 @@ p <- ggplot(return_frequency_india_Jan28) +
 ggsave("return_frequency_India_Jan28.png", p, path = fig_path, units = "in", dpi = plot_resolution, height = 6, width = 10, limitsize = FALSE)
 rm(p)
 
-
-
-
