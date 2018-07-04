@@ -28,15 +28,14 @@ Codebase to [T184677](https://phabricator.wikimedia.org/T184677)
 
 ## User retention (average returns within 31 days)
 
-![](user_retention_analysis/figures/user_retention_allcountries.png)
 
-![](user_retention_analysis/figures/user_retention_indonesia.png)
+![](user_retention_analysis/figures/user_retention_indonesia_31days.png)
 
-![](user_retention_analysis/figures/user_retention_bangladesh.png)
+![](user_retention_analysis/figures/user_retention_bangladesh_31days.png)
 
-![](user_retention_analysis/figures/user_retention_japan.png)
+![](user_retention_analysis/figures/user_retention_japan_31days.png)
 
-![](user_retention_analysis/figures/user_retention_india.png)
+![](user_retention_analysis/figures/user_retention_india_31days.png)
 
 
 
