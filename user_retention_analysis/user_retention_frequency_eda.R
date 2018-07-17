@@ -349,3 +349,107 @@ p <- ggplot(return_frequency_india_Jan28) +
 ggsave("return_frequency_India_Jan28.png", p, path = fig_path, units = "in", dpi = plot_resolution, height = 6, width = 10, limitsize = FALSE)
 rm(p)
 
+##Japan Drop
+
+#Japan drop on mobile web between 2016-12-30 and 2017-01-01
+return_frequency_Japan_drop <- rbind(readr::read_rds("data/return_frequency_Japan_drop.rds"))
+
+##seen on WP on 2016-12-30 and returning within 31 days.
+return_frequency_Japan_Dec30 <- return_frequency_Japan_drop %>%
+  dplyr::filter(date == 1483056000)
+
+p <- ggplot(return_frequency_Japan_Dec30) + 
+  geom_bar(aes(x=days_till_next_access, y= returns_each_day/sum(returns_each_day)), 
+           stat = "identity") +
+  scale_y_continuous("Returns each day", labels = percent) +
+  scale_x_continuous("Days until next access", breaks=seq(1,31,1))  +
+  labs(title = "Days until next access for Dec 30, 2016 from Japan on mobile web all Wikipedia Projects") +  
+  wmf::theme_min()
+
+
+ggsave("return_frequency_Japan_Dec30.png", p, path = fig_path, units = "in", dpi = plot_resolution, height = 6, width = 10, limitsize = FALSE)
+rm(p)
+
+##seen on WP on 2016-12-31 and returning within 31 days.
+return_frequency_Japan_Dec31 <- return_frequency_Japan_drop %>%
+  dplyr::filter(date == 1483142400)
+
+p <- ggplot(return_frequency_Japan_Dec31) + 
+  geom_bar(aes(x=days_till_next_access, y= returns_each_day/sum(returns_each_day)), 
+           stat = "identity") +
+  scale_y_continuous("Returns each day", labels = percent) +
+  scale_x_continuous("Days until next access", breaks=seq(1,31,1))  +
+  labs(title = "Days until next access for Dec 31, 2016 from Japan on mobile web all Wikipedia Projects") +  
+  wmf::theme_min()
+
+
+ggsave("return_frequency_Japan_Dec31.png", p, path = fig_path, units = "in", dpi = plot_resolution, height = 6, width = 10, limitsize = FALSE)
+rm(p)
+
+##seen on WP on 2017-01-01 and returning within 31 days.
+return_frequency_Japan_Jan1 <- return_frequency_Japan_drop %>%
+  dplyr::filter(date == 1483228800)
+
+p <- ggplot(return_frequency_Japan_Jan1) + 
+  geom_bar(aes(x=days_till_next_access, y= returns_each_day/sum(returns_each_day)), 
+           stat = "identity") +
+  scale_y_continuous("Returns each day", labels = percent) +
+  scale_x_continuous("Days until next access", breaks=seq(1,31,1))  +
+  labs(title = "Days until next access for Jan 1, 2017 from Japan on mobile web all Wikipedia Projects") +  
+  wmf::theme_min()
+
+
+ggsave("return_frequency_Japan_Jan1.png", p, path = fig_path, units = "in", dpi = plot_resolution, height = 6, width = 10, limitsize = FALSE)
+rm(p)
+
+## Bangladesh spike on mobile web on 2018-02-05
+
+return_frequency_bd_Feb2018 <- rbind(readr::read_rds("data/return_frequency_bd_Feb5.rds"))
+
+##seen on WP on 2018-02-04 and returning within 31 days.
+return_frequency_bd_Feb4 <- return_frequency_bd_Feb2018 %>%
+  dplyr::filter(date == 1517702400)
+
+p <- ggplot(return_frequency_bd_Feb4) + 
+  geom_bar(aes(x=days_till_next_access, y= returns_each_day/sum(returns_each_day)), 
+           stat = "identity") +
+  scale_y_continuous("Returns each day", labels = percent) +
+  scale_x_continuous("Days until next access", breaks=seq(1,31,1))  +
+  labs(title = "Days until next access for Feb 4, 2018 from Bangladesh on mobile web all Wikipedia Projects") +  
+  wmf::theme_min()
+
+
+ggsave("return_frequency_bd_Feb4.png", p, path = fig_path, units = "in", dpi = plot_resolution, height = 6, width = 10, limitsize = FALSE)
+rm(p)
+
+##seen on WP on 2018-02-05 and returning within 31 days.
+return_frequency_bd_Feb5 <- return_frequency_bd_Feb2018 %>%
+  dplyr::filter(date == 1517788800)
+
+p <- ggplot(return_frequency_bd_Feb5) + 
+  geom_bar(aes(x=days_till_next_access, y= returns_each_day/sum(returns_each_day)), 
+           stat = "identity") +
+  scale_y_continuous("Returns each day", labels = percent) +
+  scale_x_continuous("Days until next access", breaks=seq(1,31,1))  +
+  labs(title = "Days until next access for Feb 5, 2018 from Bangladesh on mobile web all Wikipedia Projects") +  
+  wmf::theme_min()
+
+
+ggsave("return_frequency_bd_Feb5.png", p, path = fig_path, units = "in", dpi = plot_resolution, height = 6, width = 10, limitsize = FALSE)
+rm(p)
+
+##seen on WP on 2018-02-06 and returning within 31 days.
+return_frequency_bd_Feb6 <- return_frequency_bd_Feb2018 %>%
+  dplyr::filter(date == 1517875200)
+
+p <- ggplot(return_frequency_bd_Feb6) + 
+  geom_bar(aes(x=days_till_next_access, y= returns_each_day/sum(returns_each_day)), 
+           stat = "identity") +
+  scale_y_continuous("Returns each day", labels = percent) +
+  scale_x_continuous("Days until next access", breaks=seq(1,31,1))  +
+  labs(title = "Days until next access for Feb 6, 2018 from Bangladesh on mobile web all Wikipedia Projects") +  
+  wmf::theme_min()
+
+
+ggsave("return_frequency_bd_Feb6.png", p, path = fig_path, units = "in", dpi = plot_resolution, height = 6, width = 10, limitsize = FALSE)
+rm(p)

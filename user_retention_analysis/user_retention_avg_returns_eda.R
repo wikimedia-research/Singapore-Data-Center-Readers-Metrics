@@ -284,7 +284,7 @@ ggsave("user_retention_March28_7days.png", p, path = fig_path, units = "in", dpi
 rm(p)
 
 
-##Long-term avg returns within 31 days [December 16, 2016 until April 29, 2018]
+##Long-term avg returns within 31 days [December 16, 2016 until May 28, 2018]
 
 user_retention_bycountry_from2016 <- read.delim("data/user_retention_allwikis_bycountry_31days_long_term.tsv", sep = "\t", stringsAsFactors =FALSE)
 user_retention_bycountry_from2016$last_seen_date <- as.Date(user_retention_bycountry_from2016$last_seen_date, format = "%d-%b-%Y")

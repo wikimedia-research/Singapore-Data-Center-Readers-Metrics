@@ -8,7 +8,7 @@ FROM tbayer.webrequest_extract_bak
 WHERE unix_timestamp(wmf_last_access, 'dd-MMM-yyyy') IS NOT NULL 
 -- accessed between Jan 1 and April 29, 2018
 AND unix_timestamp(wmf_last_access, 'dd-MMM-yyyy') >= 1514764800 -- 01/01/2018 @ 12:00am (UTC)
-AND unix_timestamp(wmf_last_access, 'dd-MMM-yyyy') < 1524960000 -- 04/29/2018 @ 12:00am (UTC) (table has data until May 31 right now)
+AND unix_timestamp(wmf_last_access, 'dd-MMM-yyyy') < 1527465600 -- 05/28/2018 @ 12:00am (UTC) 
 AND year = 2018
 AND (access_method = 'desktop' OR access_method = 'mobile web') 
 AND project_class = 'wikipedia' 

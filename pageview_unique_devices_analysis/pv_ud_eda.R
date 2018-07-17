@@ -11,14 +11,13 @@ plot_resolution <- 192
 
 pageviews_bycountry <- read.delim("data/pageviews_bycountry.tsv", sep = "\t", stringsAsFactors =FALSE)
 pageviews_bycountry$date <- as.Date(pageviews_bycountry$date, format = "%m/%d/%Y")
-#Relabel all mobile web and mobile app as mobile. 
 pageviews_bycountry$access_method[!pageviews_bycountry$access_method == "desktop"] <- "mobile (web + app)"
   
 #Find total daily Wikimedia pageviews for all eqsin regional countries
 pageviews_daily_allcountries <- pageviews_bycountry %>%
-  group_by(date, access_method) %>%
-    summarise(total_views = sum(pageviews)) %>%
-  arrange(desc(date))
+  dplyr::group_by(date, access_method) %>%
+  dplyr::summarise(total_views = sum(pageviews)) %>%
+  dplyr::arrange(desc(date))
 
 p <- ggplot(pageviews_daily_allcountries, aes(x = date, y = total_views, color = access_method)) +
   geom_line() +
@@ -36,9 +35,9 @@ rm(p)
 #Daily Wikimedia pageviews for Japan
 
 pageviews_japan<- pageviews_bycountry %>%
-  filter(country == "Japan" ) %>%
-  group_by(date, access_method) %>%
-  summarise(total_views = sum(pageviews))
+  dplyr:: filter(country == "Japan" ) %>%
+  dplyr::group_by(date, access_method) %>%
+  dplyr::summarise(total_views = sum(pageviews))
 
 p <- ggplot(pageviews_japan, aes(x = date, y = total_views, color = access_method)) +
   geom_line() +
@@ -60,9 +59,9 @@ rm(p)
 
 pageviews_bangladesh<- pageviews_bycountry %>%
   ## filter for all EQSIN Target Country List (in "Asia" (as defined by MaxMind)) 
-  filter(country == "Bangladesh") %>%
-  group_by(date, access_method) %>%
-  summarise(total_views = sum(pageviews))
+  dplyr::filter(country == "Bangladesh") %>%
+  dplyr::group_by(date, access_method) %>%
+  dplyr::summarise(total_views = sum(pageviews))
 
 p <- ggplot(pageviews_bangladesh, aes(x = date, y = total_views, color = access_method)) +
   geom_line() +
@@ -85,9 +84,9 @@ rm(p)
 
 pageviews_indonesia<- pageviews_bycountry %>%
   ## filter for all EQSIN Target Country List (in "Asia" (as defined by MaxMind)) 
-  filter(country == "Indonesia") %>%
-  group_by(date, access_method) %>%
-  summarise(total_views = sum(pageviews))
+  dplyr::filter(country == "Indonesia") %>%
+  dplyr::group_by(date, access_method) %>%
+  dplyr::summarise(total_views = sum(pageviews))
 
 p <- ggplot(pageviews_indonesia, aes(x = date, y = total_views, color = access_method)) +
   geom_line() +
@@ -109,9 +108,9 @@ rm(p)
 #Daily Wikimedia pageviews for India
 
 pageviews_india<- pageviews_bycountry %>%
-  filter(country == "India")%>%
-  group_by(date, access_method) %>%
-  summarise(total_views = sum(pageviews))
+  dplyr::filter(country == "India")%>%
+  dplyr::group_by(date, access_method) %>%
+  dplyr::summarise(total_views = sum(pageviews))
 
 p <- ggplot(pageviews_india, aes(x = date, y = total_views, color = access_method)) +
   geom_line() +
@@ -137,9 +136,9 @@ unique_devices_allcountries_wiki$date <- as.Date(unique_devices_allcountries_wik
 
 #Find daily unique devices for all eqsin impacted countries for all Wikipedia projects
 unique_devices_allcountries <- unique_devices_allcountries_wiki %>%
-  group_by(date) %>%
-  summarise(total_uniques = sum(unique_devices)) %>%
-  arrange(desc(date))
+  dplyr::group_by(date) %>%
+  dplyr::summarise(total_uniques = sum(unique_devices)) %>%
+  dplyr::arrange(desc(date))
 
 p <- ggplot(unique_devices_allcountries, aes(x = date, y = total_uniques)) +
   geom_line() +
@@ -246,57 +245,6 @@ p <- ggplot(unique_devices_india, aes(x = date, y = unique_devices, color = acce
         panel.grid = element_line("gray70"))
 
 ggsave("daily_uniques_india.png", p, path = fig_path, units = "in", dpi = plot_resolution, height = 6, width = 10, limitsize = FALSE)
-rm(p)
-
-#break down by browser family
-
-pageviews_bybrowserfamily <- read.delim("data/pageviews_by_browserfamily.tsv", sep = "\t", stringsAsFactors =FALSE)
-pageviews_bybrowserfamily$date <- as.Date(pageviews_bybrowserfamily$date, format = "%m/%d/%Y")
-
-#Find top 10 browsers 
-top_browsers <- pageviews_bybrowserfamily %>%
-  group_by(browser_family) %>%
-  summarise(total_views = sum(as.numeric(pageviews)))  %>%
-  top_n(10, total_views)
-
-pageviews_bybrowserfamily_all <- pageviews_bybrowserfamily %>%
-  filter(browser_family %in% top_browsers$browser_family)%>%
-  group_by(date, browser_family) %>%
-  summarise(total_views = sum(pageviews))
-
-
-p <- ggplot(pageviews_bybrowserfamily_all, aes(x = date, y = total_views, color = browser_family)) +
-  geom_line(size = 1.5) +
-  scale_y_continuous("pageviews (excludes bots)", labels = polloi::compress) +
-  scale_x_date(labels = date_format("%Y-%m-%d"), date_breaks = "5 days")  +
-  labs(title = "Total daily pageviews by browser for all eqsin impacted countries") +  
-  ggthemes::theme_tufte(base_size = 12, base_family = "Gill Sans") +
-  theme(axis.text.x=element_text(angle = 45, hjust = 1),
-        panel.grid = element_line("gray70"))
-
-ggsave("daily_pageviews_bybrowser.png", p, path = fig_path, units = "in", dpi = plot_resolution, height = 6, width = 10, limitsize = FALSE)
-rm(p)
-
-## Look just at March 28 release dates
-pageviews_bybrowserfamily_March28 <- pageviews_bybrowserfamily %>%
-  filter(browser_family %in% top_browsers$browser_family,
-         country %in% c("Hong Kong", "Philippines", "Bangladesh", "Sri Lanka", "Nepal", "Pakistan", "Japan"))%>%
-  group_by(date, browser_family) %>%
-  summarise(total_views = sum(pageviews))
-
-p <- ggplot(pageviews_bybrowserfamily_March28 , aes(x = date, y = total_views, color = browser_family)) +
-  geom_line() +
-  geom_vline(xintercept = as.numeric(as.Date("2018-03-28")),
-             linetype = "dashed", color = "blue") +
-  geom_text(aes(x=as.Date('2018-03-28'), y=8E6, label="Deploy Date"), size=3, vjust = -1.2, angle = 90, color = "black") +
-  scale_y_log10("pageviews (excludes bots)", labels = polloi::compress) +
-  scale_x_date(labels = date_format("%Y-%m-%d"), date_breaks = "5 days")  +
-  labs(title = "Total Daily Pageviews for March 28 Deploy Date") +  
-  ggthemes::theme_tufte(base_size = 12, base_family = "Gill Sans") +
-  theme(axis.text.x=element_text(angle = 45, hjust = 1),
-        panel.grid = element_line("gray70"))
-
-ggsave("daily_pageviews__bybrowser_march28.png", p, path = fig_path, units = "in", dpi = plot_resolution, height = 6, width = 10, limitsize = FALSE)
 rm(p)
 
 

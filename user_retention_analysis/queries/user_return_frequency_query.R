@@ -165,3 +165,68 @@ readr::write_rds(return_frequency_India_drop, "return_frequency_India_drop.rds",
 system("scp mneisler@stat5:/home/mneisler/return_frequency_India_drop.rds return_frequency_India_drop.rds")
 
 
+## Japan drop on mobile web between 2016-12-30 and 2017-01-01
+
+start_date <- 1483056000  #2016-12-30
+end_date <- 1483228800 #2017-01-01
+
+return_frequency_Japan_drop <- do.call(rbind, lapply(seq(start_date, end_date, by=86400), function(date) {
+  cat("Fetching webrequest data from ", as.character(date), "\n")
+  
+  query <- paste("
+                 SELECT '",date,"' AS date, 
+                 (unix_timestamp(CONCAT(year,'-',LPAD(month,2,'0'),'-',LPAD(day,2,'0')), 'yyyy-MM-dd') 
+                 - unix_timestamp(wmf_last_access, 'dd-MMM-yyyy'))/86400 AS days_till_next_access, 
+                 COUNT (*) AS returns_each_day
+                 FROM tbayer.webrequest_extract_bak
+                 WHERE unix_timestamp(wmf_last_access, 'dd-MMM-yyyy') = ", date, "
+                 AND ( (year = 2016) OR (year = 2017) )
+                 AND access_method = 'mobile web' 
+                 AND project_class = 'wikipedia' 
+                 AND country_code = 'JP'
+                 AND unix_timestamp(CONCAT(year,'-',LPAD(month,2,'0'),'-',LPAD(day,2,'0')), 'yyyy-MM-dd') < (unix_timestamp(wmf_last_access, 'dd-MMM-yyyy') + 2764800) -- 2764800 seconds = 32 days
+                 AND unix_timestamp(CONCAT(year,'-',LPAD(month,2,'0'),'-',LPAD(day,2,'0')), 'yyyy-MM-dd') >= (unix_timestamp(wmf_last_access, 'dd-MMM-yyyy') + 86400) -- 86400 seconds = 1 day
+                 GROUP BY (unix_timestamp(CONCAT(year,'-',LPAD(month,2,'0'),'-',LPAD(day,2,'0')), 'yyyy-MM-dd') - unix_timestamp(wmf_last_access, 'dd-MMM-yyyy'))/86400
+                 ;") 
+  cat(query)
+  results <- wmf::query_hive(query)
+  return(results)
+}))
+
+readr::write_rds(return_frequency_Japan_drop, "return_frequency_Japan_drop.rds", "gz")
+
+#LOCAL
+system("scp mneisler@stat5:/home/mneisler/return_frequency_Japan_drop.rds return_frequency_Japan_drop.rds")
+
+## Bangladesh spike on mobile web on 2018-02-05
+
+start_date <- 1517702400  #2018-02-04
+end_date <- 1517875200 #2018-02-06
+
+return_frequency_bd_Feb5 <- do.call(rbind, lapply(seq(start_date, end_date, by=86400), function(date) {
+  cat("Fetching webrequest data from ", as.character(date), "\n")
+  
+  query <- paste("
+                 SELECT '",date,"' AS date, 
+                 (unix_timestamp(CONCAT(year,'-',LPAD(month,2,'0'),'-',LPAD(day,2,'0')), 'yyyy-MM-dd') 
+                 - unix_timestamp(wmf_last_access, 'dd-MMM-yyyy'))/86400 AS days_till_next_access, 
+                 COUNT (*) AS returns_each_day
+                 FROM tbayer.webrequest_extract_bak
+                 WHERE unix_timestamp(wmf_last_access, 'dd-MMM-yyyy') = ", date, "
+                 AND year = 2018
+                 AND access_method = 'mobile web' 
+                 AND project_class = 'wikipedia' 
+                 AND country_code = 'BD'
+                 AND unix_timestamp(CONCAT(year,'-',LPAD(month,2,'0'),'-',LPAD(day,2,'0')), 'yyyy-MM-dd') < (unix_timestamp(wmf_last_access, 'dd-MMM-yyyy') + 2764800) -- 2764800 seconds = 32 days
+                 AND unix_timestamp(CONCAT(year,'-',LPAD(month,2,'0'),'-',LPAD(day,2,'0')), 'yyyy-MM-dd') >= (unix_timestamp(wmf_last_access, 'dd-MMM-yyyy') + 86400) -- 86400 seconds = 1 day
+                 GROUP BY (unix_timestamp(CONCAT(year,'-',LPAD(month,2,'0'),'-',LPAD(day,2,'0')), 'yyyy-MM-dd') - unix_timestamp(wmf_last_access, 'dd-MMM-yyyy'))/86400
+                 ;") 
+  cat(query)
+  results <- wmf::query_hive(query)
+  return(results)
+}))
+
+readr::write_rds(return_frequency_bd_Feb5, "return_frequency_bd_Feb5.rds", "gz")
+
+#LOCAL
+system("scp mneisler@stat5:/home/mneisler/return_frequency_bd_Feb5.rds return_frequency_bd_Feb5.rds")
